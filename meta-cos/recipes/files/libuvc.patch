@@ -1,0 +1,29 @@
+Upstream-Status: Inappropriate [not submitted upstream]
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index fbaffc9..223e129 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -39,7 +39,8 @@ set(SOURCES
+   src/misc.c
+ )
+ 
+-find_package(LibUSB)
++find_package(PkgConfig REQUIRED)
++pkg_check_modules(LIBUSB REQUIRED libusb-1.0)
+ 
+ # JpegPkg name to differ from shipped with CMake
+ find_package(JpegPkg QUIET)
+@@ -114,9 +115,12 @@ foreach(target_name IN LISTS UVC_TARGETS)
+       $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+       $<INSTALL_INTERFACE:include>
+   )
++  target_include_directories(${target_name} 
++    PRIVATE ${LIBUSB_INCLUDE_DIRS}
++  )
+   target_link_libraries(${target_name}
+     # libusb-1.0 used internally so we link to it privately.
+-    PRIVATE LibUSB::LibUSB ${threads}
++    PRIVATE ${LIBUSB_LIBRARIES} ${threads}
+   )
+   if(JPEG_FOUND)
+     target_link_libraries(${target_name}
