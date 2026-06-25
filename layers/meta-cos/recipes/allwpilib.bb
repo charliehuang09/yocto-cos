@@ -2,9 +2,8 @@ SUMMARY = "allwpilib"
 LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = "file://LICENSE.md"
 
-SRC_URI = ""
-SRC_URI += "git://github.com/wpilibsuite/allwpilib.git;protocol=https;branch=main"
-SRC_URI += "file://wpilibConfig.cmake"
+SRC_URI = "git://github.com/wpilibsuite/allwpilib.git;protocol=https;branch=main"
+SRC_URI += " file://allwpilib.patch"
 
 SRCREV = "5a7d7d50ee54eaa12e8d44d273641a236c05d903"
 
@@ -28,15 +27,9 @@ EXTRA_OECMAKE:append = " -DWITH_WPIMATH=ON"
 EXTRA_OECMAKE:append = " -DNO_WERROR=ON"
 EXTRA_OECMAKE:append = " -DWITH_JAVA=OFF"
 
-do_install:append(){
-    find ${D} -type f -name "*.so*" -exec patchelf --remove-rpath {} \;
-    rm -r ${D}/usr/share
-    install -d ${D}${libdir}/cmake/wpilib
-    install -m 0644 ${WORKDIR}/sources/wpilibConfig.cmake ${D}${libdir}/cmake/wpilib/
-}
+FILES:${PN} += " ${libdir}/*.so"
+FILES:${PN} += " /usr/share/**"
+FILES:${PN} += " /usr/include/**"
+FILES:${PN}-dev = " "
 
-FILES:${PN} += "/usr/lib/*.so"
-FILES:${PN} += "/usr/include/*"
-FILES:${PN} += "/usr/lib/cmake/**"
-
-FILES:${PN}-dev = "/usr/include/*"
+INSANE_SKIP:${PN} += "useless-rpaths"

@@ -1,0 +1,15 @@
+Upstream-Status: Pending
+diff --git a/wpiutil/CMakeLists.txt b/wpiutil/CMakeLists.txt
+index 91c7818e0..d2964f11c 100644
+--- a/wpiutil/CMakeLists.txt
++++ b/wpiutil/CMakeLists.txt
+@@ -55,7 +55,7 @@ wpilib_target_warnings(wpiutil)
+ target_link_libraries(wpiutil Threads::Threads ${CMAKE_DL_LIBS})
+ 
+ if(ATOMIC)
+-    target_link_libraries(wpiutil ${ATOMIC})
++    target_link_libraries(wpiutil atomic)
+ endif()
+ 
+ if(NOT USE_SYSTEM_FMTLIB)
+
