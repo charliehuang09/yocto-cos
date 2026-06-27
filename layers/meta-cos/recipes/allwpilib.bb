@@ -11,7 +11,7 @@ DEPENDS += "opencv"
 DEPENDS += "ninja-native"
 DEPENDS += "patchelf-native"
 
-inherit cmake pkgconfig
+inherit cmake pkgconfig cuda
 
 EXTRA_OECMAKE = ""
  
