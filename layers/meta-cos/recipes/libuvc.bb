@@ -1,9 +1,8 @@
 SUMMARY = "library for USB video devices built atop libusb"
 HOMEPAGE = "https://github.com/libuvc/libuvc.git"
 SECTION = "libs"
-
-LICENSE = "CLOSED"
-LIC_FILES_CHKSUM = "file://LICENSE.md"
+LICENSE = "BSD-3-Clause"
+LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=2f1963e0bb88c93463af750daf9ba0c2"
 
 DEPENDS = "libusb-compat jpeg"
 
