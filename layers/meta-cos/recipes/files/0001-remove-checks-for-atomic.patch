@@ -1,0 +1,43 @@
+From 4daad114049bb1c56d4ebae957b8e10dc86a2c0d Mon Sep 17 00:00:00 2001
+From: Charlie Huang <charliehuang09@gmail.com>
+Date: Sat, 25 Jul 2026 03:23:28 +0000
+Subject: [PATCH] remove checks for atomic
+Upstream-Status: Inappropriate [embedded build specific]
+
+
+Signed-off-by: Charlie Huang <charliehuang09@gmail.com>
+---
+ wpiutil/CMakeLists.txt | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
+
+diff --git a/wpiutil/CMakeLists.txt b/wpiutil/CMakeLists.txt
+index 05359d90b..fede5671c 100644
+--- a/wpiutil/CMakeLists.txt
++++ b/wpiutil/CMakeLists.txt
+@@ -102,15 +102,6 @@ endif()
+ set(THREADS_PREFER_PTHREAD_FLAG ON)
+ find_package(Threads REQUIRED)
+ 
+-if(NOT MSVC AND NOT APPLE AND NOT ANDROID)
+-    find_library(ATOMIC NAMES atomic libatomic.so.1)
+-    if(ATOMIC)
+-        message(STATUS "Found libatomic: ${ATOMIC}")
+-    else()
+-        message(STATUS "libatomic not found. If build fails, install libatomic")
+-    endif()
+-endif()
+-
+ generate_resources(src/main/native/resources generated/main/cpp WPI wpi wpiutil_resources_src)
+ 
+ file(
+@@ -156,9 +147,7 @@ else()
+     target_compile_definitions(wpiutil PUBLIC NO_PROTOBUF)
+ endif()
+ 
+-if(ATOMIC)
+-    target_link_libraries(wpiutil ${ATOMIC})
+-endif()
++target_link_libraries(wpiutil atomic)
+ 
+ if(NOT USE_SYSTEM_FMTLIB)
+     target_sources(wpiutil PRIVATE ${fmtlib_native_src})
