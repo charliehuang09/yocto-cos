@@ -3,7 +3,10 @@ SUMMARY = "Tailscale client and daemon for Linux from Tailscale pre-built binari
 HOMEPAGE = "github.com/tailscale/tailscale"
 SECTION = "net"
 
-LICENSE = "CLOSED"
+LICENSE = "BSD-3-Clause"
+# The binary archive omits LICENSE; this copy is from the v1.98.4 source tag:
+# https://github.com/tailscale/tailscale/blob/v1.98.4/LICENSE
+LIC_FILES_CHKSUM = "file://${UNPACKDIR}/tailscale-LICENSE;md5=cadeae10a8856ddfdb129866b75b33e3"
 
 INHIBIT_DEFAULT_DEPS = "1"
 
@@ -20,6 +23,7 @@ ARCH_DIR:arm = "arm"
 
 # See: https://pkgs.tailscale.com/stable/
 SRC_URI = "https://pkgs.tailscale.com/stable/tailscale_1.98.4_arm64.tgz;subdir=${P};name=${ARCH_DIR}"
+SRC_URI += " file://tailscale-LICENSE"
 SRC_URI[arm64.sha256sum] = "3cb068eb1368b6bb218d0ef0aa0a7a679a7156b7c979e2279cc2c2321b5f05c7"
 
 inherit systemd
@@ -54,6 +58,9 @@ python () {
 S = "${UNPACKDIR}/${PN}-${PV}/${PN}_${PV}_${ARCH_DIR}"
 
 do_install() {
+  install -d ${D}${docdir}/${PN}
+  install -m 0644 ${UNPACKDIR}/tailscale-LICENSE ${D}${docdir}/${PN}/LICENSE
+
   install -d ${D}/${bindir}
   install ${S}/tailscale ${D}/${bindir}/tailscale
 
