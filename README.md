@@ -83,6 +83,29 @@ demo applications.
 | demo-image-weston | Wayland with Weston compositor                                |
 | demo-image-full   | Sato image plus nvidia-docker, openCV, multimedia API samples |
 
+### COS root partition size
+
+With `meta-cos` enabled, `p3768-0000-p3767-0001` uses a single
+750 GB root partition (750,000,000,000 bytes, about 698.5 GiB).
+A/B rootfs redundancy is disabled for this machine. The external flash
+layout is sized for a 1 TB NVMe drive (1,000,000,000,000 bytes).
+These settings are in `layers/meta-cos/conf/layer.conf`.
+The `tegra-storage-layout` append prevents APP from expanding to fill the
+drive, leaving the remaining space unallocated after the boot partitions.
+
+Rebuild and reflash the image for the new layout to take effect:
+
+```sh
+. ./setup-env --machine p3768-0000-p3767-0001
+bitbake demo-image-full
+```
+
+Flash the newly generated `demo-image-full` tegraflash archive using your
+usual flashing procedure. Back up device data first: reflashing replaces
+the existing partition layout and root filesystem. After boot, check the
+partition size with `lsblk -b` and filesystem capacity with `df -h /`;
+filesystem overhead means usable space will be slightly smaller.
+
 ### Update image demo
 
 A [swupdate](https://sbabic.github.io/swupdate/) demo image is also available which supports
